@@ -29,6 +29,7 @@ setuptools==69.5.1
 
 starlette==0.41.3
 joblib
+sklearn
 
 
 uvicorn==0.32.1
