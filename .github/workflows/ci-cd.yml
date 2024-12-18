@@ -39,7 +39,7 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           source: "."
-          target: "/home/ubuntu/app"  # Adjust path as needed
+          target: "/home/ec2-user/Fastapi p"  # Adjust path as needed
 
       # Step 6: Restart FastAPI Application on EC2
       - name: Restart FastAPI using SSH
@@ -49,7 +49,7 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd /home/ubuntu/app
+            cd /home/ec2-user/Fastapi 
             pip install -r requirements.txt
             sudo systemctl restart fastapi.service
             sudo systemctl status fastapi.service
