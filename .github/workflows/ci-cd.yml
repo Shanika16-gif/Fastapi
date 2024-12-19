@@ -16,11 +16,17 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.9'
+        python-version: '3.10'
+
+    - name: Install system dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y libcurl4-openssl-dev curl
 
     - name: Install dependencies
       run: |
-        pip install fastapi uvicorn gunicorn
+        pip install --upgrade pip
+        pip install -r requirements.txt
 
     - name: Test the application
       run: |
@@ -30,12 +36,14 @@ jobs:
       env:
         SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
         EC2_USER: ubuntu
-        EC2_HOST: 13.61.104.249  
+        EC2_HOST: 13.61.104.249
       run: |
-        ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY $EC2_USER@$EC2_HOST << EOF
+        ssh -o StrictHostKeyChecking=no -i <(echo "$SSH_PRIVATE_KEY") $EC2_USER@$EC2_HOST << EOF
           cd /var/www/html/Fastapi
           git pull origin main
           source venv/bin/activate
           pip install -r requirements.txt
           sudo systemctl restart nginx
         EOF
+
+      
